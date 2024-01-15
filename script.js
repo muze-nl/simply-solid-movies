@@ -6,8 +6,51 @@ const simply = window.simply
 const app = simply.app({
   commands: {
     'loadMovies': (el, value) => {
-      alert('jay')
+      return this.app.actions.loadMovies(value)
+    }
+  },
+  actions: {
+    loadMovies: async (url) => {
+      
     }
   }
 })
 
+const solidApi = {
+  fetch: (url, loginInfo) {
+    let cleanURL = new URL(url)
+    cleanURL.hash = ''
+    cleanURL = cleanURL.href
+
+    let result = null
+    try {
+      result = await publicFetch(cleanURL)      
+    } catch(err) {
+      try {
+        result = await solidFetch(cleanURL)
+      } catch(err) {
+        alert(err)
+        return
+      }
+    }
+
+    let parser = new Parser({blankNodePrefix: '', baseIRI: cleanURL })
+    let prefixes = {}
+    let data = parser.parse()
+  }
+}
+
+const publicFetch = async (url, params={}) => {
+  params = Object.assign({
+    mode: 'cors',
+    headers: {
+      'Accept': 'application/*'
+    }
+  }, params)
+  let response = await fetch(url, params)
+  if (response.ok) {
+    return response.text()
+  } else {
+    throw new Error(response.status+': '+reponse.statusText)
+  }
+}
