@@ -9,9 +9,9 @@
   </head>
   <body>
     <main id="moviePicker">
-      <h1>
-        Loading...
-      </h1>
+      <button data-simply-command="loadMovies">
+        Load Movies
+      </button>
     </main>
     <footer class="footer">
       <div class="links"></div>
@@ -27,10 +27,8 @@
         Remix on Glitch
       </a>
     </footer>
-    <script src="https://cdn.jsdelivr.net/npm/@inrupt/solid-client-authn-browser"></script>
-    <script src="https://cdn.jsdelivr.net/npm/n3"></script>
     <script src="https://cdn.simplyedit.io/1/simply-edit.js" data-simply-storage="none"></script>
     <script src="https://unpkg.com/simplyview/dist/simply.everything.js"></script>
-    <script src="/script.js"></script>
+    <script src="/script.js" type="module"></script>
   </body>
 </html>
