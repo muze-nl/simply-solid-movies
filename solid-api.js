@@ -1,5 +1,5 @@
 import { getDefaultSession } from 'https://cdn.skypack.dev/pin/@inrupt/solid-client-authn-browser@v2.0.0-3Py1cpWfOrpxuIlTz5M2/dist=es2019,mode=imports/optimized/@inrupt/solid-client-authn-browser.js'
-import { Parser } from 'https://cdn.skypack.dev/pin/n3@v1.12.0-JyCuQEtqH88WU0Kn0PZm/mode=imports,min/optimized/n3.js'
+import { Store, Parser } from 'https://cdn.skypack.dev/pin/n3@v1.12.0-JyCuQEtqH88WU0Kn0PZm/mode=imports,min/optimized/n3.js'
 
 const solidAPI = {
   getCleanURL: (url) => {
@@ -26,9 +26,19 @@ const solidAPI = {
     let data = parser.parse(text, null, (prefix, url) => {
       prefixes[prefix] = url.id
     })
-    return {
-      data, prefixes
+    return new Store(data)
+    // return {
+    //   data, prefixes
+    // }
+  },
+  list: async (url) => {
+    let turtle = await solidAPI.fetch(url)
+    let data = solidAPI.parse(url, turtle)
+    let result = []
+    for (let quad of data.match(url, "http://www.w3.org/ns/ldp#contains")) {
+      result.push(quad,)
     }
+
   }
 }
 

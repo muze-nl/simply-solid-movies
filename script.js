@@ -13,13 +13,11 @@ const moviePickerApp = simply.app({
       let result = await solidAPI.fetch(url)
       document.getElementById('response').innerText = result
       let data = solidAPI.parse(url, result)
-      console.log(data)
-      moviePickerApp.view.folder = data
+      window.folder = data
+      for (let quad of data.match(url, "http://www.w3.org/ns/ldp#contains")) {
+        console.log(quad)
+      }
     }
-  },
-  view: {
-    test: 'test',
-    folder: {}
   }
 
 })
