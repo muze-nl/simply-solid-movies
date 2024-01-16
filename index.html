@@ -9,9 +9,13 @@
   </head>
   <body>
     <main id="moviePicker">
-      <button data-simply-command="loadMovies">
-        Load Movies
-      </button>
+      <form data-simply-command="loadMovies">
+        <input type="text" name="url" placeholder="url">
+        <button>
+          Load Movies
+        </button>
+      </form>
+      <textarea id="response"></textarea>
     </main>
     <footer class="footer">
       <div class="links"></div>

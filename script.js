@@ -2,15 +2,18 @@ import solidAPI from './solid-api.js'
 
 const simply = window.simply
 
-const app = simply.app({
+const moviePicker = simply.app({
   commands: {
-    'loadMovies': (el, value) => {
-      return this.app.actions.loadMovies(value)
+    'loadMovies': (form, values) => {
+      return moviePicker.actions.loadMovies(values.url)
     }
   },
   actions: {
     loadMovies: async (url) => {
-      
+      let result = await solidAPI.fetch(url)
+      document.getElementById('response').innerText = result
+      let data = solidAPI.parse(url, result)
+      console.log(data)
     }
   }
 })

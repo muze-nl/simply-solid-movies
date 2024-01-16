@@ -16,6 +16,7 @@ const solidAPI = {
     } catch(err) {
       result = await solidFetch(cleanURL)
     }
+    return result
   },
   parse: (url, text) => {
     let cleanURL = solidAPI.getCleanURL(url)
@@ -35,7 +36,7 @@ const publicFetch = async (url, params={}) => {
   params = Object.assign({
     mode: 'cors',
     headers: {
-      'Accept': 'application/*'
+      'Accept': 'text/turtle'
     }
   }, params)
   let response = await fetch(url, params)
@@ -52,7 +53,7 @@ const solidFetch = async (url, params={}) => {
   params = Object.assign({
     mode: 'cors',
     headers: {
-      'Accept': 'application/*'
+      'Accept': 'text/turtle'
     }
   }, params)
   let response = await solidSession.fetch(url, params)  
@@ -62,3 +63,5 @@ const solidFetch = async (url, params={}) => {
     throw new Error(response.status+': '+response.statusText)
   }
 }
+
+export default solidAPI
