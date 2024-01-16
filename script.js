@@ -2,10 +2,10 @@ import solidAPI from './solid-api.js'
 
 const simply = window.simply
 
-const moviePicker = simply.app({
+const moviePickerApp = simply.app({
   commands: {
     'loadMovies': (form, values) => {
-      return moviePicker.actions.loadMovies(values.url)
+      return moviePickerApp.actions.loadMovies(values.url)
     }
   },
   actions: {
@@ -14,6 +14,14 @@ const moviePicker = simply.app({
       document.getElementById('response').innerText = result
       let data = solidAPI.parse(url, result)
       console.log(data)
+      moviePickerApp.view.folder = data
     }
+  },
+  view: {
+    test: 'test',
+    folder: {}
   }
+
 })
+
+window.moviePickerApp = moviePickerApp
