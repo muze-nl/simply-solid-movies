@@ -36,9 +36,9 @@ const solidAPI = {
     let data = solidAPI.parse(url, turtle)
     let result = []
     for (let quad of data.match(url, "http://www.w3.org/ns/ldp#contains")) {
-      result.push(quad,)
+      result.push(quad.object.id)
     }
-
+    return result
   }
 }
 
