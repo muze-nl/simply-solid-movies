@@ -4,7 +4,11 @@ const simply = window.simply
 
 const moviePickerApp = simply.app({
   view: {
-    urls: []
+    urls: [],
+    progress: {
+      max: 10,
+      value: 0
+    }
   },
   commands: {
     'loadMovies': (form, values) => {
