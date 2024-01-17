@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <main id="moviePicker">
+    <main>
       <form data-simply-command="loadMovies">
         <input type="text" name="url" placeholder="url">
         <button>
@@ -16,7 +16,12 @@
         </button>
         <progress data-simply-field="progress" data-simply-transformer="progress" data-simply-content="fixed"></progress>
       </form>
-      <textarea rows="40" cols="80" id="response"></textarea>
+      <section data-simply-field="suggestedMovie" data-simply-content="tempate" data-simply-default-template="movie" data-simply-default-value="nomovie">
+        <template data-simply-template="nomovie"></template>
+        <template data-simply-template="movie">
+          <h1 data-simply-field="suggestedMovie.name">title</h1>
+        </template>
+      </section>
     </main>
     <footer class="footer">
       <div class="links"></div>

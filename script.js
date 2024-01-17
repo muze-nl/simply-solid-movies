@@ -11,8 +11,10 @@ const moviePickerApp = simply.app({
     }
   },
   commands: {
-    'loadMovies': (form, values) => {
-      return moviePickerApp.actions.loadMovies(values.url)
+    'loadMovies': async (form, values) => {
+      await moviePickerApp.actions.loadMovies(values.url)
+      let movies = moviePickerApp.actions.filterWatchedMovies()
+      moviePickerApp.view.suggestedMovie = moviePickerApp.actions.getMovieData(movies[0])
     }
   },
   actions: {
@@ -57,6 +59,9 @@ const moviePickerApp = simply.app({
       
       //@TODO: what if all movies are in watched, which movie is the least watched?
       return unwatched
+    },
+    getMovieData: (movieId) => {
+      window.movieStore.match(movieId)
     }
   }
 
