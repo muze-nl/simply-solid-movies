@@ -28,11 +28,13 @@ const moviePickerApp = simply.app({
       window.movieStore = store
     },
     filterWachedMovies: () => {
-      let watchedActions = []
+      let watched = []
+      let movieSubject
       for (let q of window.movieStore.match(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://schema.org/WatchAction')) {
-        
+        movieSubject = window.movieStore.getQuads(q.subject.id, 'https://schema.org/object')[0].object.id
+        watched.push(movieSubject.substr(0,movieSubject.indexOf('#')))
       }
-      
+      return watched
     }
   }
 
