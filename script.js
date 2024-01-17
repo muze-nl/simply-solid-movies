@@ -13,8 +13,11 @@ const moviePickerApp = simply.app({
   commands: {
     'loadMovies': async (form, values) => {
       await moviePickerApp.actions.loadMovies(values.url)
-      let movies = moviePickerApp.actions.filterWatchedMovies()
-      moviePickerApp.view.suggestedMovie = moviePickerApp.actions.getMovieData(movies[0])
+      let movies = await moviePickerApp.actions.filterWatchedMovies()
+      if (movies.size) {
+        let suggestion = movies[0]
+        moviePickerApp.view.suggestedMovie = await moviePickerApp.actions.getMovieData(suggestion)
+      }
     }
   },
   actions: {
@@ -38,7 +41,7 @@ const moviePickerApp = simply.app({
       window.folder = list
       window.movieStore = store
     },
-    filterWachedMovies: async () => {
+    filterWatchedMovies: async () => {
       let watched = [], unwatched = []
       for (let q of window.movieStore.match(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://schema.org/WatchAction')) {
         let movieReferences = window.movieStore.getQuads(q.subject.id, 'https://schema.org/object')
@@ -61,7 +64,17 @@ const moviePickerApp = simply.app({
       return unwatched
     },
     getMovieData: (movieId) => {
-      window.movieStore.match(movieId)
+      let fields = { 
+        name: 'https://schema.org/name'
+      }
+      let result = {
+        id: movieId
+      }
+      for (let [name,predicate] of Object.entries(fields) ) {
+        let quads = [...window.movieStore.match(movieId, predicate)]
+        result[name] = quads.map(q => q.object.value).pop()
+      }
+      return result
     }
   }
 
