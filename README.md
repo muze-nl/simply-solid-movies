@@ -34,7 +34,6 @@ The HTML skeleton contains placeholders for data, e.g.:
 
 HTML tags with a data-simply-field attribute can be updated in the javascript code, see below.
 
-
 2. script.js
 
 This creates an application (`simply.app()`) with `commands` and `actions`.
@@ -65,9 +64,8 @@ Updating variable fields in the application HTML is done by setting a view varia
   moviePickerApp.view.suggestedMovie = await moviePickerApp.actions.getMovieData(suggestion)
 ```
 
-You don't need to re-render the application, or manualy update the HTML. By setting the `data-simply-field` attribute, 
+You don't need to re-render the application, or manualy update the HTML. By setting the `data-simply-field` attribute,
 and updating the field with the same name in the application view, the HTML is updted automatically.
-
 
 3. solid-api.js
 
@@ -77,7 +75,42 @@ It loads the solid-client-authn-browser code from inrupt, using the skypack cdn.
 
 It then loads the N3 javascript library, to do the actual parsing of the linked data stored inside the solid pod.
 
+## Linked Data and Turtle
 
+Solid Data PODs support any RDF (Linked Data) format. But Turtle (text/turtle) is required. So this app only asks for data in the Turtle format.
+
+Turtle is a more human readable/writable format for triples. Each line in a turtle file is a set of triples. A line ends with a `.`
+
+```
+<#it> a schem:Movie .
+```
+
+Triples are made up out of a Subject, a Predicate and an Object. Each of these is a URI (basically a URL), except Objects. These can also be Literalsm e.g. a string, number or boolean.
+
+To prevent having to type subjects again and again, turtle allows you to create additional triples with the same subject by appending a `;`
+
+```
+<#it> a schem:Movie ;
+      schem:name "2001: A Space Odyssey" .
+```
+
+And if you want to duplicate the predicate as well, you can use a `,`:
+
+```
+<#it> a schem:Movie ;
+      schem:name "2001: A Space Odyssey"
+      schem:sameAs "https://www.imdb.com/title/tt0062622",
+        "https://www.themoviedb.org/movie/62".
+```
+
+Subject and Predicate URI's are encoded starting with a `<` and ending in a `>`, unless you use a prefix that you defined earlier:
+
+```
+@prefix schem: <https://schema.org/>.
+```
+
+Prefixes are a literal substitution. To get the full URL of a prefixed version, e.g. from `schem:name`, you replace `schem:` with
+the full URL `https://schema.org/`, so it becomes `https://schema.org/name`
 
 ## You built this with Glitch!
 
