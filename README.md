@@ -1,6 +1,6 @@
 # Solid Movie Picker
 
-This glitch showcases a very basic Solid Application. Solid is a framework to build decentralized web applications, 
+This glitch showcases a very basic Solid Application. Solid is a framework to build decentralized web applications,
 see [https://solidproject.org/](https://solidproject.org/) for more information.
 
 It also shows how to use [SimplyEdit](https://simplyedit.io/) and [SimplyView](https://reference.simplyedit.io/simplyview/) to create a web application.

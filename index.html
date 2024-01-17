@@ -10,13 +10,20 @@
   <body>
     <main>
       <form data-simply-command="loadMovies">
-        <input type="text" name="url" placeholder="url">
-        <button>
-          Load Movies
-        </button>
-        <progress data-simply-field="progress" data-simply-transformer="progress" data-simply-content="fixed"></progress>
+        <input type="text" name="url" placeholder="url" />
+        <button>Load Movies</button>
+        <progress
+          data-simply-field="progress"
+          data-simply-transformer="progress"
+          data-simply-content="fixed"
+        ></progress>
       </form>
-      <section data-simply-field="suggestedMovie" data-simply-content="template" data-simply-default-template="movie" data-simply-default-value="nomovie">
+      <section
+        data-simply-field="suggestedMovie"
+        data-simply-content="template"
+        data-simply-default-template="movie"
+        data-simply-default-value="nomovie"
+      >
         <template data-simply-template="nomovie"></template>
         <template data-simply-template="movie">
           <h1 data-simply-field="suggestedMovie.name">title</h1>
@@ -28,7 +35,7 @@
       <a
         class="btn--remix"
         target="_top"
-        href="https://glitch.com/edit/#!/remix/glitch-hello-website"
+        href="https://glitch.com/edit/#!/remix/simply-solid-movies"
       >
         <img
           src="https://cdn.glitch.com/605e2a51-d45f-4d87-a285-9410ad350515%2FLogo_Color.svg?v=1618199565140"
