@@ -19,21 +19,14 @@ const solidAPI = {
     return result
   },
   parse: (url, text) => {
-    let cleanURL = solidAPI.getCleanURL(url)
-
-    let parser = new Parser({blankNodePrefix: '', baseIRI: cleanURL })
-    let prefixes = {}
-    let data = parser.parse(text, null, (prefix, url) => {
-      prefixes[prefix] = url.id
-    })
+    const cleanURL = solidAPI.getCleanURL(url)
+    const parser = new Parser({blankNodePrefix: '', baseIRI: cleanURL })
+    const data = parser.parse(text)
     return new Store(data)
-    // return {
-    //   data, prefixes
-    // }
   },
   list: async (url) => {
-    let turtle = await solidAPI.fetch(url)
-    let data = solidAPI.parse(url, turtle)
+    const turtle = await solidAPI.fetch(url)
+    const data = solidAPI.parse(url, turtle)
     let result = []
     for (let quad of data.match(url, "http://www.w3.org/ns/ldp#contains")) {
       result.push(quad.object.id)
@@ -44,8 +37,8 @@ const solidAPI = {
     if (!store) {
       store = new Store()
     }
-    let turtle = await solidAPI.fetch(url)
-    let data = solidAPI.parse(url, turtle)
+    const turtle = await solidAPI.fetch(url)
+    const data = solidAPI.parse(url, turtle)
     for (let quad of data) {
       store.add(quad)
     }

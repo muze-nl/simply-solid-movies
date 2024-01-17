@@ -13,8 +13,7 @@ const moviePickerApp = simply.app({
   },
   actions: {
     loadMovies: async (url) => {
-      let list = await solidAPI.list(url)
-      window.folder = list
+      const list = await solidAPI.list(url)
       let output = document.getElementById('response')
       let store = new solidAPI.Store
       moviePickerApp.view.progress = {
@@ -22,17 +21,19 @@ const moviePickerApp = simply.app({
         value: 0
       }
       for (let movie of list) {
-        moviePickerApp.view.progress.value++
         await solidAPI.get(movie, store)
+        moviePickerApp.view.progress.value++
       }
+      // temp debug stuff - remove
+      window.folder = list
       window.movieStore = store
     },
     filterWachedMovies: () => {
       let watched = []
       let movieSubject
       for (let q of window.movieStore.match(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://schema.org/WatchAction')) {
-        movieSubject = window.movieStore.getQuads(q.subject.id, 'https://schema.org/object')[0].object.id
-        watched.push(movieSubject.substr(0,movieSubject.indexOf('#')))
+        watched.pushmovieSubject = window.movieStore.getQuads(q.subject.id, 'https://schema.org/object')[0].object.id
+        (movieSubject)
       }
       return watched
     }
