@@ -5,8 +5,8 @@ see [https://solidproject.org/](https://solidproject.org/) for more information.
 
 It also shows how to use [SimplyEdit](https://simplyedit.io/) and [SimplyView](https://reference.simplyedit.io/simplyview/) to create a web application.
 
-The application assumes you have a Solid Data POD, and you have used [mediaKraken](https://noeldemartin.github.io/media-kraken/login) to create a folder with movies in your data pod.
-mediaKraken is a web application that supports solid data pods. You can find the [source code on github](https://github.com/NoelDeMartin/media-kraken), and the author has also made [some talks about the development of the app](https://www.youtube.com/watch?app=desktop&v=cajBTJXmKhA).
+The application assumes you have a Solid Data POD, and you have used [mediaKraken](https://github.com/NoelDeMartin/media-kraken) to create a folder with movies in your data pod.
+mediaKraken is a web application that supports solid data pods. The author has also made [some talks about the development of the app](https://www.youtube.com/watch?app=desktop&v=cajBTJXmKhA).
 
 So to use this glitch:
 
@@ -66,7 +66,7 @@ Updating variable fields in the application HTML is done by setting a view varia
 ```
 
 You don't need to re-render the application, or manualy update the HTML. By setting the `data-simply-field` attribute,
-and updating the field with the same name in the application view, the HTML is updted automatically.
+and updating the field with the same name in the application view, the HTML is updated automatically.
 
 3. solid-api.js
 
