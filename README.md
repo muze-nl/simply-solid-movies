@@ -26,6 +26,15 @@ Then this glitch application will select a random movie that you haven't watched
 
 This contains the skeleton HTML, and loads the required scripts. The `script.js` file contains the application code.
 
+The HTML skeleton contains placeholders for data, e.g.:
+
+```
+<h1 data-simply-field="suggestedMovie.title">title</h1>
+```
+
+HTML tags with a data-simply-field attribute can be updated in the javascript code, see below.
+
+
 2. script.js
 
 This creates an application (`simply.app()`) with `commands` and `actions`.
@@ -50,9 +59,25 @@ const moviePickerApp = simply.app({
 
 Now when you submit the form, the loadMovies command function is called. It then handles the form inputs.
 
+Updating variable fields in the application HTML is done by setting a view variable. E.g. the `suggestedMovie.title` field is set in the loadMovies command:
+
+```
+  moviePickerApp.view.suggestedMovie = await moviePickerApp.actions.getMovieData(suggestion)
+```
+
+You don't need to re-render the application, or manualy update the HTML. By setting the `data-simply-field` attribute, 
+and updating the field with the same name in the application view, the HTML is updted automatically.
+
+
 3. solid-api.js
 
-This is the low level code that allows the application to talk to solid pods and to parse linked data formats like turtle.
+This is the low level code that allows the application to talk to solid pods and to parse [linked data formats like turtle](https://medium.com/wallscope/understanding-linked-data-formats-rdf-xml-vs-turtle-vs-n-triples-eb931dbe9827).
+
+It loads the solid-client-authn-browser code from inrupt, using the skypack cdn. Skypack makes sure we can actually use this code in the browser, without having to create our own bundle.
+
+It then loads the N3 javascript library, to do the actual parsing of the linked data stored inside the solid pod.
+
+
 
 ## You built this with Glitch!
 
