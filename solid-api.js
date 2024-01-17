@@ -39,7 +39,19 @@ const solidAPI = {
       result.push(quad.object.id)
     }
     return result
-  }
+  },
+  get: async (url, store=null) => {
+    if (!store) {
+      store = new Store()
+    }
+    let turtle = await solidAPI.fetch(url)
+    let data = solidAPI.parse(url, turtle)
+    for (let quad of data) {
+      store.add(quad)
+    }
+    return data.size
+  },
+  Store: Store
 }
 
 const publicFetch = async (url, params={}) => {

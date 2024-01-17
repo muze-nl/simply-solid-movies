@@ -13,6 +13,11 @@ const moviePickerApp = simply.app({
       let list = await solidAPI.list(url)
       window.folder = list
       document.getElementById('response').innerHTML = list.join(', ')
+      let store = new solidAPI.Store
+      for (let movie of list) {
+        await solidAPI.get(movie, store)
+      }
+      window.
     }
   }
 
