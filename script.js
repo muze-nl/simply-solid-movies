@@ -1,5 +1,4 @@
 import solidAPI from './solid-api.js'
-import { createDB, query } from 'https://cdn.jsdelivr.net/gh/stopachka/datalogJS/src/index.js'
 
 const simply = window.simply
 
@@ -38,15 +37,7 @@ const moviePickerApp = simply.app({
       window.movieStore = store
     },
     filterWachedMovies: async () => {
-      const triples = window.movieStore.getQuads().map(q => [q.subject.id,q.predicate.id,q.object.value])
-      let db = createDB(triples)
-      let unwatched = db.query({
-        find: '?name',
-        where: [
-          ['?']          
-        ]
-      })
-      let watched = []
+      let watched = [], unwatched = []
       for (let q of window.movieStore.match(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://schema.org/WatchAction')) {
         let movieReferences = window.movieStore.getQuads(q.subject.id, 'https://schema.org/object')
         for (let reference of movieReferences) {
@@ -54,8 +45,18 @@ const moviePickerApp = simply.app({
         }
       }
       // find movies in movieStore that are not in watched, 
-      // to handle multiple movie stores, find the sameAs ids and group movies together based on that
-      return watched
+      for (let q of window.movieStore.match(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://schema.org/Movie')) {
+        if (watched.indexOf(q.subject.id)===-1) {
+          unwatched.push(q.subject.id)
+        }
+      }
+      // @TODO: to handle multiple movie stores, find the sameAs ids and group movies together based on that
+      // then add watched items by their sameAs object.id
+      // then filter movies quads by checking if their sameAs object.id's are in watched
+      // this may result in multiple entries for each movie
+      
+      //@TODO: what if all movies are in watched, which movie is the least watched?
+      return unwatched
     }
   }
 
