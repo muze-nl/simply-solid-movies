@@ -14,8 +14,9 @@ const moviePickerApp = simply.app({
     'loadMovies': async (form, values) => {
       await moviePickerApp.actions.loadMovies(values.url)
       let movies = await moviePickerApp.actions.filterWatchedMovies()
-      if (movies.size) {
-        let suggestion = movies[0]
+      if (movies.length) {
+        let index = Math.floor(Math.random() * movies.length)
+        let suggestion = movies[index]
         moviePickerApp.view.suggestedMovie = await moviePickerApp.actions.getMovieData(suggestion)
       }
     }
