@@ -26,6 +26,13 @@ const moviePickerApp = simply.app({
         await solidAPI.get(movie, store)
       }
       window.movieStore = store
+    },
+    filterWachedMovies: () => {
+      let watchedActions = []
+      for (let q of window.movieStore.match(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://schema.org/WatchAction')) {
+        
+      }
+      
     }
   }
 
