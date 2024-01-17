@@ -30,11 +30,14 @@ const moviePickerApp = simply.app({
     },
     filterWachedMovies: () => {
       let watched = []
-      let movieSubject
       for (let q of window.movieStore.match(null, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 'https://schema.org/WatchAction')) {
-        watched.pushmovieSubject = window.movieStore.getQuads(q.subject.id, 'https://schema.org/object')[0].object.id
-        (movieSubject)
+        let movieReferences = window.movieStore.getQuads(q.subject.id, 'https://schema.org/object')
+        for (let reference of movieReferences) {
+          watched.push(reference.object.id)
+        }
       }
+      // find movies in movieStore that are not in watched, 
+      // to handle multiple movie stores, find the sameAs ids and group movies together based on that
       return watched
     }
   }
