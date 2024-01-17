@@ -17,12 +17,12 @@ const moviePickerApp = simply.app({
       window.folder = list
       let output = document.getElementById('response')
       let store = new solidAPI.Store
-      let count = 0
-      let total = list.length
+      moviePickerApp.view.progress = {
+        total: list.length,
+        value: 0
+      }
       for (let movie of list) {
-        count++
-        output.value += `${count}/${total}: ${movie}\n`
-        output.scrollTop = output.scrollHeight
+        moviePickerApp.view.progress.value++
         await solidAPI.get(movie, store)
       }
       window.movieStore = store
@@ -32,3 +32,16 @@ const moviePickerApp = simply.app({
 })
 
 window.moviePickerApp = moviePickerApp
+
+window.editor.transformers.progress = {
+  render: function(data) {
+    this.value = data.value
+    this.max = data.total
+  },
+  extract: function() {
+    return {
+      value: this.value,
+      total: this.max
+    }
+  }
+}
