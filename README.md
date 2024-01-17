@@ -1,6 +1,7 @@
 # Solid Movie Picker
 
-This glitch showcases a very basic Solid Application. Solid is a framework to build decentralized web applications, see https://solidproject.org/ for more information.
+This glitch showcases a very basic Solid Application. Solid is a framework to build decentralized web applications, 
+see [https://solidproject.org/](https://solidproject.org/) for more information.
 
 It also shows how to use [SimplyEdit](https://simplyedit.io/) and [SimplyView](https://reference.simplyedit.io/simplyview/) to create a web application.
 
@@ -71,9 +72,9 @@ and updating the field with the same name in the application view, the HTML is u
 
 This is the low level code that allows the application to talk to solid pods and to parse [linked data formats like turtle](https://medium.com/wallscope/understanding-linked-data-formats-rdf-xml-vs-turtle-vs-n-triples-eb931dbe9827).
 
-It loads the solid-client-authn-browser code from inrupt, using the skypack cdn. Skypack makes sure we can actually use this code in the browser, without having to create our own bundle.
+It loads the [solid-client-authn-browser](https://github.com/inrupt/solid-client-authn-js/) code from inrupt, using the skypack cdn. Skypack makes sure we can actually use this code in the browser, without having to create our own bundle.
 
-It then loads the N3 javascript library, to do the actual parsing of the linked data stored inside the solid pod.
+It then loads the [N3 javascript library](https://github.com/rdfjs/N3.js), to do the actual parsing of the linked data stored inside the solid pod.
 
 ## Linked Data and Turtle
 
