@@ -10,7 +10,7 @@ const moviePickerApp = simply.app({
     progress: {},
   },
   commands: {
-    loadMovies: async (form, values) => {
+    suggestMovie: async (form, values) => {
       await moviePickerApp.actions.loadMovies(values.url);
       let movies = await moviePickerApp.actions.filterWatchedMovies();
       if (movies.length) {
