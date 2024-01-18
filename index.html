@@ -1,18 +1,63 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Hello!</title>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="/styles.css">
-    <script src="/script.js" defer></script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="https://glitch.com/favicon.ico" />
+    <title>Solid Movie Picker</title>
+    <link rel="stylesheet" href="/style.css" />
   </head>
   <body>
-    <h1>Hi there!</h1>
-    <p>
-      I'm your cool new webpage. Made with 
-      <a href="https://www.glitch.com">Glitch</a>
-    </p>
+    <main>
+      <section data-simply-field="isLoggedIn" data-simply-content="template">
+        <template data-simply-template="false">
+          <button data-simply-command="signin">
+            Sign In
+          </button>
+        </template>
+        <template data-simply-template="true"></template>
+      </section>
+
+      <form data-simply-command="suggestMovie">
+        <input type="text" name="url" placeholder="url" />
+        <button>Load Movies</button>
+        <progress
+          data-simply-field="progress"
+          data-simply-transformer="progress"
+          data-simply-content="fixed"
+          max="10"
+          value="0"
+        ></progress>
+      </form>
+
+      <section
+        data-simply-field="suggestedMovie"
+        data-simply-content="template"
+        data-simply-default-template="movie"
+        data-simply-default-value="nomovie"
+      >
+        <template data-simply-template="nomovie"></template>
+        <template data-simply-template="movie">
+          <h1 data-simply-field="suggestedMovie.name">title</h1>
+        </template>
+      </section>
+    </main>
+    <footer class="footer">
+      <div class="links"></div>
+      <a
+        class="btn--remix"
+        target="_top"
+        href="https://glitch.com/edit/#!/remix/simply-solid-movies"
+      >
+        <img
+          src="https://cdn.glitch.com/605e2a51-d45f-4d87-a285-9410ad350515%2FLogo_Color.svg?v=1618199565140"
+          alt=""
+        />
+        Remix on Glitch
+      </a>
+    </footer>
+    <script src="https://unpkg.com/simplyview/dist/simply.everything.js"></script>
+    <script src="/script.js" type="module"></script>
+    <script src="https://canary.simplyedit.io/1/simply-edit.js"></script>
   </body>
 </html>
