@@ -3,6 +3,10 @@ import solidAPI from "./solid-api.js";
 const simply = window.simply;
 
 const moviePickerApp = simply.app({
+  view: {
+    isLoggedIn: false,
+    progress: {}
+  },
   commands: {
     loadMovies: async (form, values) => {
       await moviePickerApp.actions.loadMovies(values.url);
@@ -14,6 +18,7 @@ const moviePickerApp = simply.app({
           await moviePickerApp.actions.getMovieData(suggestion);
       }
     },
+    
     signin: async (el, value) => {
       moviePickerApp.actions.signin()
     }
@@ -23,13 +28,14 @@ const moviePickerApp = simply.app({
     start: async () => {
       moviePickerApp.view.progress.max = 10;
       moviePickerApp.view.progress.value = 0;
+      moviePickerApp.view.isLoggedIn = solidAPI.isLoggedIn
     },
 
     loadMovies: async (url) => {
       const list = await solidAPI.list(url);
       let output = document.getElementById("response");
       let store = new solidAPI.Store();
-      moviePickerApp.view.progress.max = {
+      moviePickerApp.view.progress = {
         max: list.length,
         value: 0,
       };
@@ -91,6 +97,7 @@ const moviePickerApp = simply.app({
     signin: async () => {
       let oidcIssuer
       if (oidcIssuer = prompt('Enter your identity provider URL (oidcIssuer)')) {
+        oidcIssuer = new URL(oidcIssuer, document.location.href).href
         solidAPI.signin(oidcIssuer, document.location.href)
       }
     }
