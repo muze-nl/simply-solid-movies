@@ -28,12 +28,8 @@ const moviePickerApp = simply.app({
 
   actions: {
     start: async () => {
-      moviePickerApp.view.progress.max = 10;
-      moviePickerApp.view.progress.value = 0;
       await solidAPI.handleIncomingRedirect();
-      if (solidAPI.isLoggedIn) {
-        moviePickerApp.view.isLoggedIn = true;
-      }
+      moviePickerApp.view.isLoggedIn = !!solidAPI.isLoggedIn;
     },
 
     loadMovies: async (url) => {

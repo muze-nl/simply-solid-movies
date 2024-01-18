@@ -1,7 +1,7 @@
 import {
   fetch,
   login,
-  handleIncomingRequest,
+  handleIncomingRedirect,
   getDefaultSession,
 } from "https://cdn.skypack.dev/pin/@inrupt/solid-client-authn-browser@v2.0.0-3Py1cpWfOrpxuIlTz5M2/dist=es2019,mode=imports/optimized/@inrupt/solid-client-authn-browser.js";
 import {
@@ -46,10 +46,7 @@ const solidAPI = {
     return result;
   },
   
-  get: async (url, store = null) => {
-    if (!store) {
-      store = new Store();
-    }
+  get: async (url, store) => {
     const turtle = await solidAPI.fetch(url);
     const data = solidAPI.parse(url, turtle);
     for (let quad of data) {
@@ -70,8 +67,8 @@ const solidAPI = {
     }
   },
   
-  handleIncomingRequest: async () => {
-    await handleIncomingRequest()
+  handleIncomingRedirect: async () => {
+    await handleIncomingRedirect()
     solidAPI.isLoggedIn = getDefaultSession().info.isLoggedIn
   }
 };
