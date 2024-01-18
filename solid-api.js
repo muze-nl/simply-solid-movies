@@ -9,12 +9,6 @@ import {
 } from "https://cdn.skypack.dev/pin/n3@v1.12.0-JyCuQEtqH88WU0Kn0PZm/mode=imports,min/optimized/n3.js";
 
 const solidAPI = {
-  getCleanURL: (url) => {
-    let cleanURL = new URL(url);
-    cleanURL.hash = "";
-    return cleanURL.href;
-  },
-  
   fetch: async (url, params) => {
     params = Object.assign(
       {
@@ -34,17 +28,16 @@ const solidAPI = {
   },
   
   parse: (url, text) => {
-    const cleanURL = solidAPI.getCleanURL(url);
-    const parser = new Parser({ blankNodePrefix: "", baseIRI: cleanURL });
-    const data = parser.parse(text);
-    return new Store(data);
+    const parser = new Parser({ blankNodePrefix: "", baseIRI: url });
+    return parser.parse(text);
   },
   
   list: async (url) => {
     const turtle = await solidAPI.fetch(url);
     const data = solidAPI.parse(url, turtle);
+    const store = new Store(data)
     let result = [];
-    for (let quad of data.match(url, "http://www.w3.org/ns/ldp#contains")) {
+    for (let quad of store.match(url, "http://www.w3.org/ns/ldp#contains")) {
       result.push(quad.object.id);
     }
     return result;
