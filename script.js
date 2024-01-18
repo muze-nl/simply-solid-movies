@@ -3,13 +3,6 @@ import solidAPI from "./solid-api.js";
 const simply = window.simply;
 
 const moviePickerApp = simply.app({
-  view: {
-    urls: [],
-    progress: {
-      max: 10,
-      value: 0,
-    },
-  },
   commands: {
     loadMovies: async (form, values) => {
       await moviePickerApp.actions.loadMovies(values.url);
@@ -21,17 +14,22 @@ const moviePickerApp = simply.app({
           await moviePickerApp.actions.getMovieData(suggestion);
       }
     },
+    signin: async (el, value) => {
+      moviePickerApp.actions.signin()
+    }
   },
+
   actions: {
     start: async () => {
       moviePickerApp.view.progress.max = 10;
       moviePickerApp.view.progress.value = 0;
     },
+
     loadMovies: async (url) => {
       const list = await solidAPI.list(url);
       let output = document.getElementById("response");
       let store = new solidAPI.Store();
-      moviePickerApp.view.progress = {
+      moviePickerApp.view.progress.max = {
         max: list.length,
         value: 0,
       };
@@ -39,10 +37,8 @@ const moviePickerApp = simply.app({
         await solidAPI.get(movie, store);
         moviePickerApp.view.progress.value++;
       }
-      // temp debug stuff - remove
-      window.folder = list;
-      window.movieStore = store;
     },
+    
     filterWatchedMovies: async () => {
       let watched = [],
         unwatched = [];
@@ -77,6 +73,7 @@ const moviePickerApp = simply.app({
       //@TODO: what if all movies are in watched, which movie is the least watched?
       return unwatched;
     },
+    
     getMovieData: (movieId) => {
       let fields = {
         name: "https://schema.org/name",
@@ -90,7 +87,14 @@ const moviePickerApp = simply.app({
       }
       return result;
     },
-  },
+    
+    signin: async () => {
+      let oidcIssuer
+      if (oidcIssuer = prompt('Enter your identity provider URL (oidcIssuer)')) {
+        solidAPI.signin(oidcIssuer, document.location.href)
+      }
+    }
+  }
 });
 
 window.moviePickerApp = moviePickerApp;

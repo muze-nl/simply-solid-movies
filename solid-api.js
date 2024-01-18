@@ -1,6 +1,8 @@
 import {
   fetch,
+  login,
   getDefaultSession,
+  handleIncomingRedirect,
 } from "https://cdn.skypack.dev/pin/@inrupt/solid-client-authn-browser@v2.0.0-3Py1cpWfOrpxuIlTz5M2/dist=es2019,mode=imports/optimized/@inrupt/solid-client-authn-browser.js";
 import {
   Store,
@@ -8,11 +10,14 @@ import {
 } from "https://cdn.skypack.dev/pin/n3@v1.12.0-JyCuQEtqH88WU0Kn0PZm/mode=imports,min/optimized/n3.js";
 
 const solidAPI = {
+  isLoggedIn: false,
+  
   getCleanURL: (url) => {
     let cleanURL = new URL(url);
     cleanURL.hash = "";
     return cleanURL.href;
   },
+  
   fetch: async (url, params) => {
     params = Object.assign(
       {
@@ -30,12 +35,14 @@ const solidAPI = {
       throw new Error(response.status + ": " + response.statusText);
     }
   },
+  
   parse: (url, text) => {
     const cleanURL = solidAPI.getCleanURL(url);
     const parser = new Parser({ blankNodePrefix: "", baseIRI: cleanURL });
     const data = parser.parse(text);
     return new Store(data);
   },
+  
   list: async (url) => {
     const turtle = await solidAPI.fetch(url);
     const data = solidAPI.parse(url, turtle);
@@ -45,6 +52,7 @@ const solidAPI = {
     }
     return result;
   },
+  
   get: async (url, store = null) => {
     if (!store) {
       store = new Store();
@@ -56,7 +64,24 @@ const solidAPI = {
     }
     return data.size;
   },
+  
   Store: Store,
+  
+  signin: async (oidcIssuer, redirectUrl) => {
+    if (!getDefaultSession().info.isLoggedIn) {
+      await login({
+        oidcIssuer,
+        redirectUrl,
+        clientName: "Solid Demo Muze aan de UT",
+      });
+    }
+  }
 };
 
 export default solidAPI;
+
+handleIncomingRedirect().then(() => {
+  if (getDefaultSession().info.isLoggedIn) {
+    solidAPI.isLoggedIn = true
+  }
+})
