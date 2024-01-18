@@ -1,11 +1,18 @@
 import solidAPI from "./solid-api.js";
 
+import {
+  getDefaultSession,
+  handleIncomingRedirect,
+} from "https://cdn.skypack.dev/pin/@inrupt/solid-client-authn-browser@v2.0.0-3Py1cpWfOrpxuIlTz5M2/dist=es2019,mode=imports/optimized/@inrupt/solid-client-authn-browser.js";
+
 const simply = window.simply;
+
+let store = new solidAPI.Store();
 
 const moviePickerApp = simply.app({
   view: {
     isLoggedIn: false,
-    progress: {}
+    progress: {},
   },
   commands: {
     loadMovies: async (form, values) => {
@@ -18,23 +25,23 @@ const moviePickerApp = simply.app({
           await moviePickerApp.actions.getMovieData(suggestion);
       }
     },
-    
+
     signin: async (el, value) => {
-      moviePickerApp.actions.signin()
-    }
+      moviePickerApp.actions.signin();
+    },
   },
 
   actions: {
     start: async () => {
       moviePickerApp.view.progress.max = 10;
       moviePickerApp.view.progress.value = 0;
-      moviePickerApp.view.isLoggedIn = solidAPI.isLoggedIn
+      debugger;
+      moviePickerApp.view.isLoggedIn = getDefaultSession().info.isLoggedIn;
     },
 
     loadMovies: async (url) => {
       const list = await solidAPI.list(url);
       let output = document.getElementById("response");
-      let store = new solidAPI.Store();
       moviePickerApp.view.progress = {
         max: list.length,
         value: 0,
@@ -44,16 +51,16 @@ const moviePickerApp = simply.app({
         moviePickerApp.view.progress.value++;
       }
     },
-    
+
     filterWatchedMovies: async () => {
       let watched = [],
         unwatched = [];
-      for (let q of window.movieStore.match(
+      for (let q of store.match(
         null,
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
         "https://schema.org/WatchAction"
       )) {
-        let movieReferences = window.movieStore.getQuads(
+        let movieReferences = store.getQuads(
           q.subject.id,
           "https://schema.org/object"
         );
@@ -62,7 +69,7 @@ const moviePickerApp = simply.app({
         }
       }
       // find movies in movieStore that are not in watched,
-      for (let q of window.movieStore.match(
+      for (let q of store.match(
         null,
         "http://www.w3.org/1999/02/22-rdf-syntax-ns#type",
         "https://schema.org/Movie"
@@ -79,7 +86,7 @@ const moviePickerApp = simply.app({
       //@TODO: what if all movies are in watched, which movie is the least watched?
       return unwatched;
     },
-    
+
     getMovieData: (movieId) => {
       let fields = {
         name: "https://schema.org/name",
@@ -88,28 +95,30 @@ const moviePickerApp = simply.app({
         id: movieId,
       };
       for (let [name, predicate] of Object.entries(fields)) {
-        let quads = [...window.movieStore.match(movieId, predicate)];
+        let quads = [...store.match(movieId, predicate)];
         result[name] = quads.map((q) => q.object.value).pop();
       }
       return result;
     },
-    
+
     signin: async () => {
-      let oidcIssuer
-      if (oidcIssuer = prompt('Enter your identity provider URL (oidcIssuer)')) {
-        oidcIssuer = new URL(oidcIssuer, document.location.href).href
-        solidAPI.signin(oidcIssuer, document.location.href)
+      let oidcIssuer;
+      if (
+        (oidcIssuer = prompt("Enter your identity provider URL (oidcIssuer)"))
+      ) {
+        oidcIssuer = new URL(oidcIssuer, document.location.href).href;
+        solidAPI.signin(oidcIssuer, document.location.href);
       }
-    }
-  }
+    },
+  },
 });
 
 window.moviePickerApp = moviePickerApp;
 
 window.editor.transformers.progress = {
   render: function (data) {
-    this.value = data.value;
-    this.max = data.max;
+    this.value = parseInt(data.value) || 0;
+    this.max = parseInt(data.max) || 1;
   },
   extract: function () {
     return {
@@ -126,3 +135,9 @@ if (window.editor && window.editor.currentData) {
     moviePickerApp.actions.start();
   });
 }
+
+handleIncomingRedirect().then(() => {
+  if (getDefaultSession().info.isLoggedIn) {
+    moviePickerApp.view.isLoggedIn = true;
+  }
+});

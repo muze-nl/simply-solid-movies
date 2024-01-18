@@ -2,7 +2,6 @@ import {
   fetch,
   login,
   getDefaultSession,
-  handleIncomingRedirect,
 } from "https://cdn.skypack.dev/pin/@inrupt/solid-client-authn-browser@v2.0.0-3Py1cpWfOrpxuIlTz5M2/dist=es2019,mode=imports/optimized/@inrupt/solid-client-authn-browser.js";
 import {
   Store,
@@ -10,8 +9,6 @@ import {
 } from "https://cdn.skypack.dev/pin/n3@v1.12.0-JyCuQEtqH88WU0Kn0PZm/mode=imports,min/optimized/n3.js";
 
 const solidAPI = {
-  isLoggedIn: false,
-  
   getCleanURL: (url) => {
     let cleanURL = new URL(url);
     cleanURL.hash = "";
@@ -79,9 +76,3 @@ const solidAPI = {
 };
 
 export default solidAPI;
-
-handleIncomingRedirect().then(() => {
-  if (getDefaultSession().info.isLoggedIn) {
-    solidAPI.isLoggedIn = true
-  }
-})
