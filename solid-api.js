@@ -1,6 +1,7 @@
 import {
   fetch,
   login,
+  handleIncomingRequest,
   getDefaultSession,
 } from "https://cdn.skypack.dev/pin/@inrupt/solid-client-authn-browser@v2.0.0-3Py1cpWfOrpxuIlTz5M2/dist=es2019,mode=imports/optimized/@inrupt/solid-client-authn-browser.js";
 import {
@@ -9,6 +10,8 @@ import {
 } from "https://cdn.skypack.dev/pin/n3@v1.12.0-JyCuQEtqH88WU0Kn0PZm/mode=imports,min/optimized/n3.js";
 
 const solidAPI = {
+  isLoggedIn: false,
+  
   fetch: async (url, params) => {
     params = Object.assign(
       {
@@ -65,6 +68,11 @@ const solidAPI = {
         clientName: "Solid Demo Muze aan de UT",
       });
     }
+  },
+  
+  handleIncomingRequest: async () => {
+    await handleIncomingRequest()
+    solidAPI.isLoggedIn = getDefaultSession().info.isLoggedIn
   }
 };
 

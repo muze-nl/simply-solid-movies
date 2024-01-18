@@ -1,10 +1,5 @@
 import solidAPI from "./solid-api.js";
 
-import {
-  getDefaultSession,
-  handleIncomingRedirect,
-} from "https://cdn.skypack.dev/pin/@inrupt/solid-client-authn-browser@v2.0.0-3Py1cpWfOrpxuIlTz5M2/dist=es2019,mode=imports/optimized/@inrupt/solid-client-authn-browser.js";
-
 const simply = window.simply;
 
 let store = new solidAPI.Store();
@@ -35,8 +30,10 @@ const moviePickerApp = simply.app({
     start: async () => {
       moviePickerApp.view.progress.max = 10;
       moviePickerApp.view.progress.value = 0;
-      debugger;
-      moviePickerApp.view.isLoggedIn = getDefaultSession().info.isLoggedIn;
+      await solidAPI.handleIncomingRedirect();
+      if (solidAPI.isLoggedIn) {
+        moviePickerApp.view.isLoggedIn = true;
+      }
     },
 
     loadMovies: async (url) => {
@@ -136,8 +133,3 @@ if (window.editor && window.editor.currentData) {
   });
 }
 
-handleIncomingRedirect().then(() => {
-  if (getDefaultSession().info.isLoggedIn) {
-    moviePickerApp.view.isLoggedIn = true;
-  }
-});
